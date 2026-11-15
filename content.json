@@ -10,13 +10,46 @@
     "footerNote": "这条时间线还在往前长。"
   },
   "home": {
-    "background": "",
+    "background": "assets/home-bg.jpg",
     "backgroundMotion": false,
+    "scrim": 0.55,
     "objects": [
-      { "key": "about", "label": "关于", "href": "about/", "x": 24, "y": 40, "rotate": -4, "scale": 1 },
-      { "key": "works", "label": "作品", "href": "works/", "x": 72, "y": 38, "rotate": 3, "scale": 1 },
-      { "key": "likes", "label": "喜爱", "href": "likes/", "x": 28, "y": 74, "rotate": 2, "scale": 0.92 },
-      { "key": "photos", "label": "图片", "href": "photos/", "x": 74, "y": 73, "rotate": -3, "scale": 0.95 }
+      {
+        "key": "about",
+        "label": "关于",
+        "href": "about/",
+        "x": 24,
+        "y": 40,
+        "rotate": -4,
+        "scale": 1
+      },
+      {
+        "key": "works",
+        "label": "作品",
+        "href": "works/",
+        "x": 72,
+        "y": 38,
+        "rotate": 3,
+        "scale": 1
+      },
+      {
+        "key": "likes",
+        "label": "喜爱",
+        "href": "likes/",
+        "x": 28,
+        "y": 74,
+        "rotate": 2,
+        "scale": 0.92
+      },
+      {
+        "key": "photos",
+        "label": "图片",
+        "href": "photos/",
+        "x": 74,
+        "y": 73,
+        "rotate": -3,
+        "scale": 0.95
+      }
     ]
   },
   "likes": {

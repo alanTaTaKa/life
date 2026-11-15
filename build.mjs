@@ -160,7 +160,7 @@ const renderObject = (o) => {
 const bg = home.background
   ? `<div class="home-bg${home.backgroundMotion ? ' is-slow' : ''}" style="background-image:url('${esc(
       asset(home.background)
-    )}')"></div>`
+    )}');--scrim:${Number.isFinite(Number(home.scrim)) ? Number(home.scrim) : 0.55}"></div>`
   : ''
 
 const pageHome = `${head({ title: s.title, desc: s.tagline, prefix: '' })}

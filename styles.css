@@ -679,7 +679,15 @@ a:hover {
   inset: 0;
   background-size: cover;
   background-position: center;
-  z-index: -1;
+}
+
+/* 压一层纸色半透明，照片再花字也读得清（纯色，不是渐变）；浓度用 --scrim 调，默认 0.55 */
+.home-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--paper);
+  opacity: var(--scrim, 0.55);
 }
 
 /* 背景图缓慢呼吸；系统要求减少动态就停 */

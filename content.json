@@ -9,13 +9,31 @@
     "location": "中国 · 东莞",
     "footerNote": "这条时间线还在往前长。"
   },
+  "home": {
+    "background": "",
+    "backgroundMotion": false,
+    "objects": [
+      { "key": "about", "label": "关于", "href": "about/", "x": 24, "y": 40, "rotate": -4, "scale": 1 },
+      { "key": "works", "label": "作品", "href": "works/", "x": 72, "y": 38, "rotate": 3, "scale": 1 },
+      { "key": "likes", "label": "喜爱", "href": "likes/", "x": 28, "y": 74, "rotate": 2, "scale": 0.92 },
+      { "key": "photos", "label": "图片", "href": "photos/", "x": 74, "y": 73, "rotate": -3, "scale": 0.95 }
+    ]
+  },
+  "likes": {
+    "intro": "书、片子、工具，随手记。",
+    "items": []
+  },
+  "photos": {
+    "intro": "以后放这里。",
+    "items": []
+  },
   "stages": [
     {
       "id": "stage-1",
       "period": "2020 — 2024",
       "title": "想躲进考研，又自己退了出来",
-      "place": "东莞理工学院 · 通信工程",
-      "summary": "2020 年进东莞理工学院，通信工程。专业是随手填的，当时不会选。四年没进社团，加上疫情，玩也没玩尽兴。大三下学期决定考研——一半想要更高的学历，一半想晚点面对社会；准备了一个学期，身边的人陆续去工作，家里也紧，最后还是没定下心，放弃了。",
+      "place": "某学院 · 通信工程",
+      "summary": "2020 年进某学院，通信工程。专业是随手填的，当时不会选。四年没进社团，加上疫情，玩也没玩尽兴。大三下学期决定考研——一半想要更高的学历，一半想晚点面对社会；准备了一个学期，身边的人陆续去工作，家里也紧，最后还是没定下心，放弃了。",
       "quote": "大学没学到什么有用的东西，玩得倒还可以。",
       "achievements": [],
       "works": []

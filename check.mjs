@@ -74,23 +74,29 @@ if (!Array.isArray(data.stages) || data.stages.length === 0) {
   })
 }
 
-// ---------- index.html ----------
+// ---------- 生成的页面 ----------
 
+const PAGES = ['index.html', 'about/index.html', 'works/index.html', 'likes/index.html', 'photos/index.html']
+const contentMtime = statSync(join(here, 'content.json')).mtimeMs
 let html = ''
-try {
-  html = read('index.html')
-} catch {
-  err('index.html 不存在，先跑 node build.mjs')
+const collected = []
+
+for (const page of PAGES) {
+  let text = ''
+  try {
+    text = read(page)
+    collected.push(text)
+    if (statSync(join(here, page)).mtimeMs < contentMtime) {
+      err(`${page} 比 content.json 旧 —— 改了内容没重新生成，跑 node build.mjs`)
+    }
+  } catch {
+    err(`${page} 不存在，先跑 node build.mjs`)
+  }
 }
 
-if (html) {
-  // 产物是否比内容旧
-  try {
-    if (statSync(join(here, 'content.json')).mtimeMs > statSync(join(here, 'index.html')).mtimeMs) {
-      err('index.html 比 content.json 旧 —— 改了内容没重新生成，跑 node build.mjs')
-    }
-  } catch {}
+html = collected.join('\n')
 
+if (html) {
   // TODO 只认大写：小写的 todo 多半是文件名（比如 assets/todo-cover.png）
   const placeholders = html.match(/示例|占位|lorem ipsum|TODO/g) || []
   if (placeholders.length) {
@@ -110,6 +116,15 @@ if (html) {
 
   if (!/<html lang="zh-CN"/.test(html)) warn('html 缺 lang="zh-CN"')
   if (!/name="viewport"/.test(html)) err('缺 viewport meta，手机上会缩成一小块')
+
+  // 主页面上的入口链接要指向真的存在的页面
+  const home = collected[0] || ''
+  for (const m of home.matchAll(/<a class="object" href="([^"]+)"/g)) {
+    const href = m[1]
+    if (href.startsWith('http')) continue
+    const target = join(here, href, 'index.html')
+    if (!existsSync(target)) err(`主页入口指向不存在的页面：${href}`)
+  }
 }
 
 // ---------- styles.css ----------

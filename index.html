@@ -12,95 +12,43 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%233B4247%22%2F%3E%3Ccircle%20cx%3D%2232%22%20cy%3D%2232%22%20r%3D%229%22%20fill%3D%22%238FBFA6%22%2F%3E%3C%2Fsvg%3E" />
 <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
-  <a class="skip-link" href="#timeline">跳到时间线</a>
-
-  <header class="hero">
-    <div class="hero-inner">
+<body class="page-home">
+<a class="skip-link" href="#main">跳到正文</a>
+  <main id="main" class="home">
+    
+    <div class="home-intro">
       <p class="eyebrow">人生轨迹 · 中国 · 东莞</p>
       <h1 class="name">夏目</h1>
       <p class="tagline">在工厂里调相机，学着用 AI 把手上的活做快一点。</p>
-      <p class="intro">这条线不长：四年大学，两年工厂，中间一次没考完的研。写下来的都是回头还认得出来的事。</p>
-      <nav class="hero-links" aria-label="联系方式">
-        <a href="https://github.com/alanTaTaKa" target="_blank" rel="noopener noreferrer">GitHub</a>
-      </nav>
-      <p class="hero-count">3 个阶段 · 1 件作品</p>
     </div>
-    <a class="scroll-cue" href="#timeline" aria-hidden="true" tabindex="-1"><span></span></a>
-  </header>
-
-  <main id="timeline" class="timeline" tabindex="-1">
-
-      <section class="stage" id="stage-1">
-        <div class="stage-year">
-          <span class="year">2020 — 2024</span>
-          <span class="place">东莞理工学院 · 通信工程</span>
-        </div>
-        <div class="stage-rail" aria-hidden="true">
-          <span class="stage-dot"></span>
-        </div>
-        <div class="stage-card">
-          <h2 class="stage-title">想躲进考研，又自己退了出来</h2>
-          <p class="stage-summary">2020 年进东莞理工学院，通信工程。专业是随手填的，当时不会选。四年没进社团，加上疫情，玩也没玩尽兴。大三下学期决定考研——一半想要更高的学历，一半想晚点面对社会；准备了一个学期，身边的人陆续去工作，家里也紧，最后还是没定下心，放弃了。</p>
-          <blockquote class="stage-quote">大学没学到什么有用的东西，玩得倒还可以。</blockquote>
-          
-          
-        </div>
-      </section>
-
-      <section class="stage" id="stage-2">
-        <div class="stage-year">
-          <span class="year">2024 — 2025</span>
-          <span class="place">某大厂制造部 · 派遣</span>
-        </div>
-        <div class="stage-rail" aria-hidden="true">
-          <span class="stage-dot"></span>
-        </div>
-        <div class="stage-card">
-          <h2 class="stage-title">从写算法，到跑现场</h2>
-          <p class="stage-summary">2024 年大四下学期实习三个月，之后留下，在某大厂制造部做派遣。第一年写 HDR 算法，顺带入 C++ 和相机标定，后来用 C# WinForm 给视觉软件加工具模块。第二年转到部门的第二版视觉软件（Java），开始跑现场：调相机和光源、跟项目部署，一年里跟过三四个。</p>
-          
-          <ul class="achievements"><li>把 HDR 算法做到能用的程度，同时入了 C++ 和相机标定</li><li>一年里跟过三四个项目的视觉软件部署与设备调试</li></ul>
-          
-        </div>
-      </section>
-
-      <section class="stage" id="stage-3">
-        <div class="stage-year">
-          <span class="year">2026 — 至今</span>
-          <span class="place">某大厂制造部 · 派遣</span>
-        </div>
-        <div class="stage-rail" aria-hidden="true">
-          <span class="stage-dot"></span>
-        </div>
-        <div class="stage-card">
-          <h2 class="stage-title">第三版软件，和一场没准备好的换轨</h2>
-          <p class="stage-summary">2026 年部门开始上大模型。前两年一直担心的编码能力，今年突然不担心了，换成另一个：用不好 AI 会被落下。第二版软件的框架太难维护，部门做了第三版——基于 AI 开发的 C++ 版本。前期加班赶工，项目管理没规划好，前中期维护得很痛苦。在里面练出「对话 + 日志」定位问题，日常问题大多能解；内存泄漏、卡死还没系统办法。</p>
-          <blockquote class="stage-quote">前两年担心的是编码能力，今年担心的是用不好 AI。</blockquote>
-          <ul class="achievements"><li>参与第三版 C++ 视觉软件的赶工与前期维护</li><li>用对话加日志定位故障，覆盖大部分日常问题</li><li>把自己用 AI 的路分成四段，现在站在第一段的山顶</li></ul>
-          <div class="works">
-        <a class="work" href="https://my-todo-five-nu.vercel.app" target="_blank" rel="noopener noreferrer">
-          <span class="work-thumb"><img src="assets/todo-cover.png" alt="今日待办 的封面" loading="lazy" /></span>
-          <span class="work-body">
-            <span class="work-head">
-              <span class="work-title">今日待办</span>
-              <span class="work-year">2026</span>
-            </span>
-            <span class="work-meta">独立开发 · 网站</span>
-            <span class="work-summary">自己的任务和项目一直管得乱，九月用 opencode 搓了一个：免注册、数据留在本地、能离线、可以装到桌面。</span>
-          </span>
-          <span class="work-go" aria-hidden="true">打开 →</span>
-        </a></div>
-        </div>
-      </section>
+    <div class="objects" aria-label="入口">
+      <a class="object" href="about/" style="--x:24%;--y:40%;--r:-4deg;--s:1"><span class="object-art"><svg viewBox="0 0 120 120" aria-hidden="true">
+    <path d="M18 20h84v76l-14 14H18z" fill="var(--surface)" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+    <path d="M88 96v14l14-14z" fill="var(--paper)" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+    <path d="M32 42h54M32 56h54M32 70h34" stroke="currentColor" stroke-width="1.1" opacity=".45" stroke-linecap="round"/>
+  </svg></span><span class="object-label">关于</span></a>
+      <a class="object" href="works/" style="--x:72%;--y:38%;--r:3deg;--s:1"><span class="object-art"><svg viewBox="0 0 120 150" aria-hidden="true">
+    <rect x="20" y="10" width="80" height="130" rx="6" fill="var(--surface)" stroke="currentColor" stroke-width="1.6"/>
+    <path d="M40 10v130" stroke="currentColor" stroke-width="1.2" opacity=".45"/>
+    <path d="M52 36h36M52 52h36M52 68h24" stroke="currentColor" stroke-width="1.1" opacity=".4" stroke-linecap="round"/>
+    <path d="M78 10v34" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/>
+  </svg></span><span class="object-label">作品</span></a>
+      <a class="object" href="likes/" style="--x:28%;--y:74%;--r:2deg;--s:0.92"><span class="object-art"><svg viewBox="0 0 140 96" aria-hidden="true">
+    <rect x="8" y="12" width="124" height="72" rx="8" fill="var(--surface)" stroke="currentColor" stroke-width="1.6"/>
+    <rect x="22" y="30" width="92" height="30" rx="4" fill="var(--paper)" stroke="currentColor" stroke-width="1.2"/>
+    <circle cx="46" cy="45" r="8" stroke="currentColor" stroke-width="1.4" fill="none"/>
+    <circle cx="90" cy="45" r="8" stroke="currentColor" stroke-width="1.4" fill="none"/>
+    <path d="M22 74h96" stroke="currentColor" stroke-width="1.1" opacity=".35"/>
+  </svg></span><span class="object-label">喜爱</span></a>
+      <a class="object" href="photos/" style="--x:74%;--y:73%;--r:-3deg;--s:0.95"><span class="object-art"><svg viewBox="0 0 140 120" aria-hidden="true">
+    <rect x="16" y="26" width="86" height="66" rx="3" fill="var(--surface)" stroke="currentColor" stroke-width="1.4" transform="rotate(-6 59 59)"/>
+    <rect x="30" y="18" width="90" height="70" rx="3" fill="var(--surface)" stroke="currentColor" stroke-width="1.4" transform="rotate(4 75 53)"/>
+    <rect x="36" y="30" width="80" height="60" rx="3" fill="var(--paper)" stroke="currentColor" stroke-width="1.6"/>
+    <circle cx="58" cy="50" r="6" fill="var(--accent)" opacity=".55"/>
+    <path d="M40 80l18-20 14 14 12-10 18 16z" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".6"/>
+  </svg></span><span class="object-label">图片</span></a>
+    </div>
+    <p class="home-hint">点开一样东西</p>
   </main>
-
-  <footer class="footer">
-    <p class="footer-note">这条时间线还在往前长。</p>
-    <p class="footer-links">
-      <a href="https://github.com/alanTaTaKa" target="_blank" rel="noopener noreferrer">GitHub</a>
-    </p>
-    <p class="copyright">© 2026 夏目</p>
-  </footer>
 </body>
 </html>

@@ -1,0 +1,768 @@
+/* 人生时间线 · 设计系统
+   颜色/字号一律走 :root，别在别处写十六进制。 */
+
+:root {
+  --paper: #f7f4ec;
+  --surface: #fcfaf4;
+  --ink: #3b4247;
+  --muted: #706b62;
+  --accent: #456f5c;
+  --line: #e3ddcd;
+
+  /* 作品占位底色：四个低饱和纸调，避免整页只有一种灰 */
+  --tint-1: #e6ebe2;
+  --tint-2: #dde6e4;
+  --tint-3: #efe7da;
+  --tint-4: #e9e4d6;
+
+  --serif: Georgia, "Times New Roman", "Songti SC", "SimSun", serif;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --kai: "KaiTi", "Kaiti SC", "STKaiti", "Songti SC", serif;
+
+  --radius: 14px;
+  --wrap: 1120px;
+  --read: 760px;
+}
+
+/* 夜里：纸换成墨绿灰，字换成旧纸色，青还在 */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #171a18;
+    --surface: #1d211e;
+    --ink: #e7e4d8;
+    --muted: #9aa096;
+    --accent: #8fbfa6;
+    --line: #2c332e;
+
+    --tint-1: #232924;
+    --tint-2: #1f2624;
+    --tint-3: #2a2520;
+    --tint-4: #242621;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* 给 html 一个底色，body 的纸纹才不会被传播到画布（画布背景钉在视口上，
+     会出现「字在动、纸不动」的错觉）——这样纸纹跟着内容一起滚 */
+  background-color: var(--paper);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  margin: 0;
+  background-color: var(--paper);
+  background-image: url("assets/paper.png");
+  background-repeat: repeat;
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.86;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+
+a:hover {
+  color: var(--accent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* 键盘用户跳过首屏；平时藏在视口外，聚焦时才露出来 */
+.skip-link {
+  position: absolute;
+  left: 16px;
+  top: -80px;
+  z-index: 10;
+  padding: 10px 16px;
+  border-radius: 8px;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--sans);
+  font-size: 14px;
+  text-decoration: none;
+  transition: top 0.15s ease;
+}
+
+.skip-link:focus {
+  top: 16px;
+}
+
+/* 跳到 main 是程序化聚焦，不需要给整页画一个框 */
+.timeline:focus {
+  outline: none;
+}
+
+/* ---------- 首屏 ---------- */
+
+.hero {
+  position: relative;
+  max-width: var(--wrap);
+  margin: 0 auto;
+  padding: 124px 32px 84px;
+  border-bottom: 1px solid var(--line);
+}
+
+.eyebrow {
+  margin: 0 0 26px;
+  font-family: var(--kai);
+  font-size: 15px;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+}
+
+.name {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(54px, 7.6vw, 96px);
+  line-height: 1.06;
+  letter-spacing: -0.012em;
+  font-weight: 500;
+}
+
+.tagline {
+  max-width: var(--read);
+  margin: 22px 0 0;
+  font-size: clamp(18px, 1.9vw, 22px);
+  line-height: 1.62;
+  color: var(--muted);
+}
+
+.intro {
+  max-width: var(--read);
+  margin: 22px 0 0;
+  font-family: var(--kai);
+  font-size: 17.5px;
+  line-height: 1.95;
+  color: var(--muted);
+}
+
+.hero-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 26px;
+  margin-top: 32px;
+  font-family: var(--sans);
+  font-size: 14px;
+}
+
+.hero-links a {
+  text-decoration: none;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 2px;
+}
+
+.hero-links a:hover {
+  border-color: var(--accent);
+}
+
+.hero-count {
+  margin: 40px 0 0;
+  font-family: var(--sans);
+  font-size: 11.5px;
+  letter-spacing: 0.16em;
+  color: var(--muted);
+}
+
+.scroll-cue {
+  position: absolute;
+  left: 32px;
+  bottom: -18px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  display: grid;
+  place-items: center;
+}
+
+.scroll-cue span {
+  width: 1px;
+  height: 12px;
+  background: var(--accent);
+  animation: cue 1.8s ease-in-out infinite;
+}
+
+@keyframes cue {
+  0%, 100% { transform: translateY(-2px); opacity: 0.4; }
+  50% { transform: translateY(3px); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-cue span { animation: none; }
+}
+
+/* ---------- 时间线 ---------- */
+
+.timeline {
+  position: relative;
+  max-width: var(--wrap);
+  margin: 0 auto;
+  padding: 64px 32px 40px;
+}
+
+.stage {
+  position: relative;
+  display: grid;
+  grid-template-columns: 170px 52px minmax(0, 1fr);
+  gap: 0 24px;
+  padding: 0 0 92px;
+}
+
+.stage-rail {
+  position: relative;
+}
+
+/* 每段自己画一段竖线，接起来就是整条时间轴，不用猜绝对坐标 */
+.stage-rail::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 14px;
+  bottom: 0;
+  width: 1px;
+  margin-left: -0.5px;
+  background: var(--line);
+}
+
+.stage:not(:last-child) .stage-rail::before {
+  bottom: 0;
+}
+
+.stage:last-child .stage-rail::before {
+  bottom: auto;
+  height: 30px;
+}
+
+.stage-dot {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  width: 9px;
+  height: 9px;
+  margin-left: -4.5px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 6px var(--paper);
+}
+
+.stage-year {
+  padding-top: 2px;
+  text-align: right;
+}
+
+.stage-year .year {
+  display: block;
+  font-family: var(--serif);
+  font-size: 25px;
+  line-height: 1.2;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.stage-year .place {
+  display: block;
+  margin-top: 8px;
+  font-family: var(--sans);
+  font-size: 11.5px;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.stage-card {
+  padding: 0 0 0 8px;
+}
+
+.stage-title {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(24px, 2.5vw, 31px);
+  line-height: 1.34;
+  font-weight: 500;
+  text-wrap: balance;
+}
+
+.stage-summary {
+  max-width: 62ch;
+  margin: 14px 0 0;
+  color: var(--ink);
+  text-wrap: pretty;
+}
+
+.achievements {
+  list-style: none;
+  margin: 20px 0 0;
+  padding: 0;
+  max-width: 62ch;
+}
+
+.achievements li {
+  position: relative;
+  padding-left: 22px;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 16px;
+}
+
+.achievements li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 0.72em;
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 1px;
+}
+
+/* ---------- 作品：友人帐式条目 ---------- */
+
+.works {
+  margin-top: 30px;
+  max-width: 720px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.work {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 20px;
+  padding: 18px 0;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+  text-decoration: none;
+}
+
+.work:last-child {
+  border-bottom: 0;
+}
+
+.work:hover {
+  color: inherit;
+}
+
+.work:hover .work-title {
+  color: var(--accent);
+}
+
+.work:hover .work-go {
+  transform: translateX(4px);
+}
+
+.work-thumb {
+  display: block;
+  width: 96px;
+  aspect-ratio: 4 / 3;
+  border-radius: 8px;
+  background: var(--tint-1);
+  overflow: hidden;
+}
+
+.work-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.thumb-fallback {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  font-family: var(--serif);
+  font-size: 19px;
+  letter-spacing: 0.06em;
+  color: var(--ink);
+  background: var(--tint-1);
+}
+
+.work-body {
+  display: block;
+  min-width: 0;
+}
+
+.work-head {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+}
+
+.work-title {
+  font-family: var(--serif);
+  font-size: 19px;
+  font-weight: 500;
+  line-height: 1.45;
+  transition: color 0.18s ease;
+}
+
+.work-year {
+  font-family: var(--sans);
+  font-size: 11.5px;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.work-meta {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--sans);
+  font-size: 11.5px;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+.work-summary {
+  display: block;
+  margin-top: 6px;
+  font-size: 15px;
+  color: var(--muted);
+}
+
+.work-go {
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  white-space: nowrap;
+  transition: transform 0.18s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .work-go,
+  .work-title {
+    transition: none;
+  }
+}
+
+/* ---------- 页尾 ---------- */
+
+.footer {
+  max-width: var(--wrap);
+  margin: 0 auto;
+  padding: 56px 32px 80px;
+  border-top: 1px solid var(--line);
+  text-align: center;
+}
+
+/* 一段手记式引语；内容来自 content.json 的 stages[].quote，没有就不渲染 */
+.stage-quote {
+  max-width: 58ch;
+  margin: 22px 0 0;
+  padding-left: 16px;
+  border-left: 2px solid var(--accent);
+  font-family: var(--kai);
+  font-size: 19px;
+  line-height: 1.95;
+  color: var(--ink);
+}
+
+.footer-note {
+  margin: 0;
+  font-family: var(--kai);
+  font-size: 21px;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin: 20px 0 0;
+  font-family: var(--sans);
+  font-size: 13px;
+}
+
+.copyright {
+  margin: 28px 0 0;
+  font-family: var(--sans);
+  font-size: 11.5px;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+
+/* ---------- 平板 ---------- */
+
+@media (max-width: 900px) {
+  .stage {
+    grid-template-columns: 140px 48px minmax(0, 1fr);
+    gap: 0 16px;
+  }
+
+  .stage-year .year {
+    font-size: 22px;
+  }
+
+  .work {
+    grid-template-columns: 84px minmax(0, 1fr) auto;
+    gap: 16px;
+  }
+
+  .work-thumb {
+    width: 84px;
+  }
+}
+
+/* ---------- 手机 ---------- */
+
+@media (max-width: 640px) {
+  body {
+    font-size: 16px;
+  }
+
+  .hero {
+    padding: 72px 20px 64px;
+  }
+
+  .scroll-cue {
+    display: none;
+  }
+
+  .timeline {
+    padding: 48px 20px 24px;
+  }
+
+  .stage {
+    display: block;
+    padding: 0 0 64px 48px;
+  }
+
+  .stage-rail {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 20px;
+    height: 100%;
+  }
+
+  .stage-rail::before {
+    left: 7px;
+    margin-left: 0;
+    top: 14px;
+  }
+
+  .stage:last-child .stage-rail::before {
+    height: 30px;
+  }
+
+  .stage-dot {
+    left: 7px;
+    margin-left: 0;
+  }
+
+  .stage-year {
+    text-align: left;
+    margin-bottom: 8px;
+  }
+
+  .stage-year .year {
+    font-size: 20px;
+  }
+
+  .stage-year .place {
+    display: inline;
+    margin: 0 0 0 10px;
+  }
+
+  .stage-card {
+    padding: 0;
+  }
+
+  .stage-title {
+    font-size: 23px;
+  }
+
+  .stage-summary,
+  .achievements {
+    max-width: none;
+  }
+
+  .works {
+    max-width: none;
+  }
+
+  .work {
+    grid-template-columns: 64px minmax(0, 1fr);
+    gap: 14px;
+    padding: 16px 0;
+  }
+
+  .work-thumb {
+    width: 64px;
+    border-radius: 6px;
+  }
+
+  .work-go {
+    display: none;
+  }
+
+  .footer {
+    padding: 40px 20px 64px;
+  }
+}
+
+/* ---------- 打印：存 PDF 时像一本小册子 ---------- */
+
+@page {
+  margin: 16mm 18mm;
+}
+
+@media print {
+  :root {
+    --paper: #ffffff;
+    --surface: #ffffff;
+    --ink: #111111;
+    --muted: #4a4a4a;
+    --accent: #111111;
+    --line: #c9c4b8;
+  }
+
+  body {
+    background: var(--paper);
+    background-image: none;
+    font-size: 10.5pt;
+    line-height: 1.65;
+  }
+
+  .skip-link,
+  .scroll-cue,
+  .hero-links,
+  .hero-count,
+  .footer-links,
+  .stage-rail,
+  .work-go {
+    display: none !important;
+  }
+
+  /* 纸上没有「居中窄栏」这回事：三块都吃满版心，才对得齐 */
+  .hero,
+  .timeline,
+  .footer {
+    max-width: none;
+    margin: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .hero {
+    padding: 0 0 14mm;
+  }
+
+  .name {
+    font-size: 30pt;
+  }
+
+  .tagline {
+    font-size: 12pt;
+  }
+
+  .intro {
+    font-family: var(--sans);
+    font-size: 10pt;
+  }
+
+  .timeline {
+    padding: 0;
+    max-width: none;
+  }
+
+  /* 段可以跨页，但标题别孤零零留在页脚 */
+  .stage {
+    display: block;
+    padding: 0 0 10mm;
+  }
+
+  .stage-year,
+  .stage-title,
+  .stage-summary,
+  .stage-quote {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  .stage-year {
+    margin-bottom: 2mm;
+    text-align: left;
+  }
+
+  .stage-year .year {
+    font-size: 13pt;
+  }
+
+  .stage-year .place {
+    display: inline;
+    margin-left: 4mm;
+  }
+
+  .stage-card {
+    padding: 0;
+  }
+
+  .stage-title {
+    font-size: 15pt;
+  }
+
+  .stage-summary,
+  .stage-quote,
+  .achievements {
+    max-width: none;
+  }
+
+  .works {
+    max-width: none;
+    margin-top: 6mm;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* grid 容器在分页时不吃 break-inside，改成块+浮动，一行才不会被切两半 */
+  .work {
+    display: block;
+    padding: 3mm 0;
+    overflow: hidden;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .work-thumb {
+    float: left;
+    width: 22mm;
+    margin-right: 4mm;
+    border: 1px solid var(--line);
+  }
+
+  /* 打印默认不印背景色，占位块只剩字，给它一条边框 */
+  .thumb-fallback {
+    border: 1px solid var(--line);
+  }
+
+  .footer {
+    padding-top: 6mm;
+  }
+}

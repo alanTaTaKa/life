@@ -1,0 +1,12 @@
+# 临时产物，不进仓库
+.shots/
+.draft/
+node_modules/
+.DS_Store
+Thumbs.db
+
+# agent 的内部文档，不放进公开仓库（本地保留）
+AGENTS.md
+HANDOFF.md
+DECISIONS.md
+PROFILE.md

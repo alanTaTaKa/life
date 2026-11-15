@@ -60,7 +60,12 @@
   },
   "photos": {
     "intro": "以后放这里。",
-    "items": []
+    "items": [
+      {
+        "image": "assets/哲风壁纸-二次元-夏目.jpg",
+        "caption": "夏目友人帐"
+      }
+    ]
   },
   "stages": [
     {

@@ -275,7 +275,9 @@ const renderPhotos = (items = []) =>
   items.length
     ? `<div class="photo-grid">${items
         .map(
-          (p) => `<figure class="photo"><img src="${esc(asset(p.image, '../'))}" alt="${esc(p.caption || '')}" loading="lazy" />${
+          (p) => `<figure class="photo"><a class="photo-open" href="${esc(asset(p.image, '../'))}" data-caption="${esc(
+            p.caption || ''
+          )}"><img src="${esc(asset(p.image, '../'))}" alt="${esc(p.caption || '')}" loading="lazy" /></a>${
             p.caption ? `<figcaption>${esc(p.caption)}</figcaption>` : ''
           }</figure>`
         )
@@ -295,6 +297,7 @@ ${navBar('../', 'photos')}
     ${renderPhotos((data.photos || {}).items || [])}
   </main>
 ${footer('../')}
+  ${((data.photos || {}).items || []).length ? '<script src="../assets/gallery.js" defer></script>' : ''}
 </body>
 </html>
 `

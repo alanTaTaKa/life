@@ -690,6 +690,22 @@ a:hover {
   opacity: var(--scrim, 0.55);
 }
 
+/* 鼠标聚光：遮罩在指针处开个软边洞，原图透出来；开关在主页的 data-spotlight */
+.home[data-spotlight="on"] .home-bg::after {
+  -webkit-mask-image: radial-gradient(
+    circle var(--spot-r, 170px) at var(--spot-x, -999px) var(--spot-y, -999px),
+    transparent 0,
+    transparent 36%,
+    black 100%
+  );
+  mask-image: radial-gradient(
+    circle var(--spot-r, 170px) at var(--spot-x, -999px) var(--spot-y, -999px),
+    transparent 0,
+    transparent 36%,
+    black 100%
+  );
+}
+
 /* 背景图缓慢呼吸；系统要求减少动态就停 */
 .home-bg.is-slow {
   animation: breathe 34s ease-in-out infinite alternate;

@@ -163,10 +163,14 @@ const bg = home.background
     )}');--scrim:${Number.isFinite(Number(home.scrim)) ? Number(home.scrim) : 0.55}"></div>`
   : ''
 
+const homeSpot = home.spotlight
+  ? { on: true, size: Number(home.spotlightSize) || 170 }
+  : { on: false, size: 170 }
+
 const pageHome = `${head({ title: s.title, desc: s.tagline, prefix: '' })}
 <body class="page-home">
 ${skipLink}
-  <main id="main" class="home">
+  <main id="main" class="home" data-spotlight="${homeSpot.on ? 'on' : 'off'}" style="--spot-r:${homeSpot.size}px">
     ${bg}
     <div class="home-intro">
       <p class="eyebrow">人生轨迹 · ${esc(s.location)}</p>
@@ -178,6 +182,25 @@ ${skipLink}
     </div>
     <p class="home-hint">点开一样东西</p>
   </main>
+  ${
+    homeSpot.on
+      ? `<script>
+  // 鼠标聚光：更新遮罩圆心，让原图在指针附近透出来（没鼠标就不动）
+  ;(() => {
+    const root = document.documentElement
+    let raf = 0
+    window.addEventListener('pointermove', (e) => {
+      if (raf) return
+      raf = requestAnimationFrame(() => {
+        raf = 0
+        root.style.setProperty('--spot-x', e.clientX + 'px')
+        root.style.setProperty('--spot-y', e.clientY + 'px')
+      })
+    }, { passive: true })
+  })()
+</script>`
+      : ''
+  }
 </body>
 </html>
 `

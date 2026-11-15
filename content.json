@@ -13,6 +13,8 @@
     "background": "assets/home-bg.jpg",
     "backgroundMotion": false,
     "scrim": 0.55,
+    "spotlight": true,
+    "spotlightSize": 170,
     "objects": [
       {
         "key": "about",

@@ -84,6 +84,7 @@ const html = `<!doctype html>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>${esc(s.title)}</title>
 <meta name="description" content="${esc(s.tagline)}" />
+<meta name="robots" content="noindex, nofollow" />
 <meta property="og:title" content="${esc(s.title)}" />
 <meta property="og:description" content="${esc(s.tagline)}" />
 <meta property="og:type" content="profile" />

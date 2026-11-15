@@ -14,7 +14,7 @@
 </head>
 <body class="page-home">
 <a class="skip-link" href="#main">跳到正文</a>
-  <main id="main" class="home" data-spotlight="on" style="--spot-r:170px">
+  <main id="main" class="home" data-spotlight="on" style="--spot-r:170px" data-defaults='{"spotlight":true,"motion":false,"scrim":0.55,"size":170}'>
     <div class="home-bg" style="background-image:url('assets/home-bg.jpg');--scrim:0.55"></div>
     <div class="home-intro">
       <p class="eyebrow">人生轨迹 · 中国 · 东莞</p>
@@ -49,21 +49,8 @@
   </svg></span><span class="object-label">图片</span></a>
     </div>
     <p class="home-hint">点开一样东西</p>
+    <p class="fx-hint">右键换效果</p>
   </main>
-  <script>
-  // 鼠标聚光：更新遮罩圆心，让原图在指针附近透出来（没鼠标就不动）
-  ;(() => {
-    const root = document.documentElement
-    let raf = 0
-    window.addEventListener('pointermove', (e) => {
-      if (raf) return
-      raf = requestAnimationFrame(() => {
-        raf = 0
-        root.style.setProperty('--spot-x', e.clientX + 'px')
-        root.style.setProperty('--spot-y', e.clientY + 'px')
-      })
-    }, { passive: true })
-  })()
-</script>
+  <script src="assets/home-effects.js" defer></script>
 </body>
 </html>

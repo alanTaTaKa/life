@@ -811,6 +811,103 @@ a:hover {
   opacity: 0.7;
 }
 
+/* 右键效果菜单的提示（触摸设备不显示，因为右键不可用） */
+.fx-hint {
+  position: absolute;
+  bottom: 26px;
+  right: 32px;
+  margin: 0;
+  font-family: var(--kai);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+  opacity: 0.45;
+}
+
+@media (hover: none) {
+  .fx-hint {
+    display: none;
+  }
+}
+
+/* ---------- 右键效果菜单 ---------- */
+
+.fx-menu {
+  position: fixed;
+  z-index: 50;
+  min-width: 200px;
+  padding: 8px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgb(0 0 0 / 0.12);
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--ink);
+}
+
+.fx-menu .fx-title,
+.fx-menu .fx-sub {
+  margin: 4px 8px 6px;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+}
+
+.fx-menu .fx-sub {
+  margin-top: 2px;
+}
+
+.fx-menu button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 7px 10px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.fx-menu button:hover,
+.fx-menu button:focus-visible {
+  background: var(--paper);
+  outline: none;
+}
+
+.fx-menu .fx-mark {
+  color: var(--accent);
+}
+
+.fx-menu .fx-sep {
+  height: 1px;
+  margin: 6px 4px;
+  background: var(--line);
+}
+
+.fx-menu .fx-row {
+  display: flex;
+  gap: 6px;
+  padding: 0 6px 4px;
+}
+
+.fx-menu .fx-row button {
+  justify-content: center;
+  flex: 1;
+  border: 1px solid var(--line);
+  padding: 5px 0;
+}
+
+.fx-menu .fx-row button.on {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .home-bg.is-slow { animation: none; }
   .object,

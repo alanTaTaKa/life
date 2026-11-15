@@ -23,6 +23,7 @@
   --radius: 14px;
   --wrap: 1120px;
   --read: 760px;
+  --ts: 1;
 }
 
 /* 夜里：纸换成墨绿灰，字换成旧纸色，青还在 */
@@ -68,7 +69,7 @@ body {
   background-repeat: repeat;
   color: var(--ink);
   font-family: var(--sans);
-  font-size: 17px;
+  font-size: calc(17px * var(--ts, 1));
   line-height: 1.86;
   -webkit-font-smoothing: antialiased;
 }
@@ -135,7 +136,7 @@ a:hover {
 .name {
   margin: 0;
   font-family: var(--serif);
-  font-size: clamp(54px, 7.6vw, 96px);
+  font-size: clamp(calc(54px * var(--ts, 1)), calc(7.6vw * var(--ts, 1)), calc(96px * var(--ts, 1)));
   line-height: 1.06;
   letter-spacing: -0.012em;
   font-weight: 500;
@@ -144,7 +145,7 @@ a:hover {
 .tagline {
   max-width: var(--read);
   margin: 22px 0 0;
-  font-size: clamp(18px, 1.9vw, 22px);
+  font-size: clamp(calc(18px * var(--ts, 1)), calc(1.9vw * var(--ts, 1)), calc(22px * var(--ts, 1)));
   line-height: 1.62;
   color: var(--muted);
 }
@@ -299,7 +300,7 @@ a:hover {
 .stage-title {
   margin: 0;
   font-family: var(--serif);
-  font-size: clamp(24px, 2.5vw, 31px);
+  font-size: clamp(calc(24px * var(--ts, 1)), calc(2.5vw * var(--ts, 1)), calc(31px * var(--ts, 1)));
   line-height: 1.34;
   font-weight: 500;
   text-wrap: balance;
@@ -723,7 +724,7 @@ a:hover {
 }
 
 .home-intro .name {
-  font-size: clamp(48px, 9vw, 104px);
+  font-size: clamp(calc(48px * var(--ts, 1)), calc(9vw * var(--ts, 1)), calc(104px * var(--ts, 1)));
   line-height: 1.04;
   margin: 10px 0 0;
 }
@@ -854,6 +855,35 @@ a:hover {
   color: var(--muted);
 }
 
+.fx-menu .fx-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2px 6px 0 8px;
+}
+
+.fx-menu .fx-head .fx-title {
+  margin: 0;
+}
+
+.fx-menu .fx-close {
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.fx-menu .fx-close:hover {
+  background: var(--paper);
+  color: var(--ink);
+}
+
 .fx-menu .fx-sub {
   margin-top: 2px;
 }
@@ -908,6 +938,90 @@ a:hover {
   color: var(--accent);
 }
 
+/* ---------- 编辑位置：拖动入口 + 底部操作条 ---------- */
+
+.home.is-editing .object {
+  cursor: grab;
+  outline: 1px dashed var(--accent);
+  outline-offset: 6px;
+}
+
+.home.is-editing .object.dragging {
+  cursor: grabbing;
+  outline-style: solid;
+}
+
+.home.is-editing .home-hint,
+.home.is-editing .fx-hint {
+  opacity: 0;
+}
+
+.fx-bar {
+  position: fixed;
+  left: 50%;
+  bottom: 22px;
+  transform: translateX(-50%);
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px 8px 16px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  box-shadow: 0 10px 30px rgb(0 0 0 / 0.12);
+  font-size: 13px;
+}
+
+.fx-bar-tip {
+  color: var(--muted);
+  margin-right: 6px;
+}
+
+.fx-bar button {
+  padding: 5px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.fx-bar button:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.fx-bar button[data-edit="save"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--paper);
+}
+
+.fx-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 84px;
+  transform: translateX(-50%) translateY(10px);
+  z-index: 61;
+  max-width: min(520px, 88vw);
+  padding: 9px 16px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 13px;
+  line-height: 1.5;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.fx-toast.on {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .home-bg.is-slow { animation: none; }
   .object,
@@ -929,7 +1043,7 @@ a:hover {
 .inner-title {
   margin: 6px 0 0;
   font-family: var(--serif);
-  font-size: clamp(28px, 4vw, 42px);
+  font-size: clamp(calc(28px * var(--ts, 1)), calc(4vw * var(--ts, 1)), calc(42px * var(--ts, 1)));
   font-weight: 500;
   line-height: 1.25;
 }

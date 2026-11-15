@@ -12,7 +12,7 @@
 // 注入的刷新脚本只存在于发送时的内存里，不写进 index.html。
 
 import { createServer } from 'node:http'
-import { createReadStream, statSync, watch, readFileSync } from 'node:fs'
+import { createReadStream, statSync, watch, readFileSync, writeFileSync } from 'node:fs'
 import { spawnSync } from 'node:child_process'
 import { dirname, extname, join, resolve, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -114,9 +114,46 @@ function serveFile(path, req, res, injectReload = true) {
   createReadStream(path).pipe(res)
 }
 
+/** 主页的「编辑位置」保存：只改 home.objects 的 x/y，其余字节保留（仅本机开发服务提供） */
+function saveHomeFromPage(req, res) {
+  let body = ''
+  req.on('data', (chunk) => {
+    body += chunk
+    if (body.length > 100000) req.destroy()
+  })
+  req.on('end', () => {
+    try {
+      const payload = JSON.parse(body)
+      const incoming = Array.isArray(payload.objects) ? payload.objects : null
+      if (!incoming) throw new Error('objects 不是数组')
+      const file = join(here, 'content.json')
+      const data = JSON.parse(readFileSync(file, 'utf8'))
+      const byKey = new Map(((data.home || {}).objects || []).map((o) => [o.key, o]))
+      for (const item of incoming) {
+        const target = byKey.get(item.key)
+        if (!target) continue
+        const x = Number(item.x)
+        const y = Number(item.y)
+        if (!Number.isFinite(x) || !Number.isFinite(y) || x < 0 || x > 100 || y < 0 || y > 100) continue
+        target.x = Math.round(x)
+        target.y = Math.round(y)
+      }
+      writeFileSync(file, JSON.stringify(data, null, 2) + '\n')
+      build()
+      broadcast()
+      res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' })
+      res.end(JSON.stringify({ ok: true }))
+    } catch (e) {
+      res.writeHead(400, { 'Content-Type': 'application/json; charset=utf-8' })
+      res.end(JSON.stringify({ ok: false, error: e.message }))
+    }
+  })
+}
+
 const server = createServer((req, res) => {
   const url = decodeURIComponent((req.url || '/').split('?')[0])
   if (url === '/__reload') return serveReload(req, res)
+  if (url === '/__save-home' && req.method === 'POST') return saveHomeFromPage(req, res)
 
   const target = resolve(root, '.' + (url === '/' ? '/index.html' : url))
   // 别让 ../ 跑出 site/

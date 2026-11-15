@@ -11,3 +11,6 @@ AGENTS.md
 HANDOFF.md
 DECISIONS.md
 PROFILE.md
+
+# 本机双击启动器（依赖 .dev/，不进仓库）
+编辑.cmd

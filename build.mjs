@@ -151,8 +151,8 @@ const renderObject = (o) => {
   const style = `--x:${Number(o.x) || 50}%;--y:${Number(o.y) || 50}%;--r:${Number(o.rotate) || 0}deg;--s:${Number(o.scale) || 1}`
   const inner = `<span class="object-art">${art}</span><span class="object-label">${esc(o.label)}</span>`
   return o.soon
-    ? `<span class="object is-soon" style="${style}">${inner}<span class="object-note">还在收集中</span></span>`
-    : `<a class="object" href="${esc(o.href || '#')}" style="${style}">${inner}</a>`
+    ? `<span class="object is-soon" data-key="${esc(o.key)}" style="${style}">${inner}<span class="object-note">还在收集中</span></span>`
+    : `<a class="object" data-key="${esc(o.key)}" href="${esc(o.href || '#')}" style="${style}">${inner}</a>`
 }
 
 // ---------- 页面 ----------

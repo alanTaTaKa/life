@@ -270,14 +270,22 @@
     else exitEdit()
   }
 
-  // 拖动（编辑模式才生效；点在链接上照样能拖，因为编辑时先 preventDefault）
+  // 拖动（编辑模式才生效）
   home.addEventListener('pointerdown', (e) => {
     if (!editing) return
     const el = e.target.closest('.object')
     if (!el) return
     e.preventDefault()
-    const rect = home.getBoundingClientRect()
-    drag = { el, rect, startX: e.clientX, startY: e.clientY, ox: Number.parseFloat(el.style.left) || 50, oy: Number.parseFloat(el.style.top) || 50 }
+
+    const homeRect = home.getBoundingClientRect()
+    const r = el.getBoundingClientRect()
+    // 位置存在 CSS 变量里，不是 inline style，所以按实际渲染位置换算，否则第一次拖会跳到中心
+    const ox = ((r.left + r.width / 2 - homeRect.left) / homeRect.width) * 100
+    const oy = ((r.top + r.height / 2 - homeRect.top) / homeRect.height) * 100
+    el.style.left = ox + '%'
+    el.style.top = oy + '%'
+
+    drag = { el, rect: homeRect, startX: e.clientX, startY: e.clientY, ox, oy }
     el.classList.add('dragging')
     el.setPointerCapture?.(e.pointerId)
   })

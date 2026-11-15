@@ -20,8 +20,8 @@
         "key": "about",
         "label": "关于",
         "href": "about/",
-        "x": 24,
-        "y": 40,
+        "x": 92,
+        "y": 89,
         "rotate": -4,
         "scale": 1
       },
@@ -29,8 +29,8 @@
         "key": "works",
         "label": "作品",
         "href": "works/",
-        "x": 72,
-        "y": 38,
+        "x": 67,
+        "y": 73,
         "rotate": 3,
         "scale": 1
       },
@@ -38,8 +38,8 @@
         "key": "likes",
         "label": "喜爱",
         "href": "likes/",
-        "x": 28,
-        "y": 74,
+        "x": 34,
+        "y": 34,
         "rotate": 2,
         "scale": 0.92
       },
@@ -47,8 +47,8 @@
         "key": "photos",
         "label": "图片",
         "href": "photos/",
-        "x": 74,
-        "y": 73,
+        "x": 11,
+        "y": 79,
         "rotate": -3,
         "scale": 0.95
       }

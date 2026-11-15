@@ -61,6 +61,14 @@ if (homeBg) {
   else if (statSync(p).size > 300 * 1024) warn(`home.background 有 ${Math.round(statSync(p).size / 1024)}KB，超过 300KB`)
 }
 
+// 图片页的照片
+;((data.photos || {}).items || []).forEach((item, i) => {
+  if (!item.image) return err(`photos.items[${i}].image 为空`)
+  const p = join(here, item.image)
+  if (!existsSync(p)) err(`photos.items[${i}] 图片不存在：${item.image}`)
+  else if (statSync(p).size > 300 * 1024) warn(`photos.items[${i}] 有 ${Math.round(statSync(p).size / 1024)}KB，超过 300KB`)
+})
+
 if (!Array.isArray(data.stages) || data.stages.length === 0) {
   err('stages 不是非空数组')
 } else {

@@ -81,19 +81,29 @@ function notFound(res) {
   res.end('404')
 }
 
-function serveFile(path, req, res) {
+function serveFile(path, req, res, injectReload = true) {
   let st
   try {
     st = statSync(path)
   } catch {
     return notFound(res)
   }
+  // 目录：返回里面的 index.html
+  if (st.isDirectory()) {
+    path = join(path, 'index.html')
+    try {
+      st = statSync(path)
+    } catch {
+      return notFound(res)
+    }
+  }
   if (!st.isFile()) return notFound(res)
 
   const type = MIME[extname(path).toLowerCase()] || 'application/octet-stream'
 
   // HTML 在发送时注入刷新脚本；磁盘上的 index.html 一个字节都不改
-  if (type.startsWith('text/html')) {
+  // /.dev/ 下的页面（编辑器）不注入：保存一次就重载会把没存完的改动冲掉
+  if (type.startsWith('text/html') && injectReload) {
     const html = readFileSync(path, 'utf8').replace('</body>', `${RELOAD_SNIPPET}\n</body>`)
     const body = Buffer.from(html, 'utf8')
     res.writeHead(200, { 'Content-Type': type, 'Cache-Control': 'no-store', 'Content-Length': body.length })
@@ -111,7 +121,7 @@ const server = createServer((req, res) => {
   const target = resolve(root, '.' + (url === '/' ? '/index.html' : url))
   // 别让 ../ 跑出 site/
   if (target !== root && !target.startsWith(root + sep)) return notFound(res)
-  serveFile(target, req, res)
+  serveFile(target, req, res, !url.startsWith('/.dev/'))
 })
 
 /** 构建结果变了才广播，且合并 Windows 上重复触发的两次事件 */
@@ -142,7 +152,8 @@ function listen(port, triesLeft = 9) {
   })
   server.listen(port, '127.0.0.1', () => {
     console.log(`\n  人生时间线 · 开发预览`)
-    console.log(`  http://127.0.0.1:${port}/\n`)
+    console.log(`  站    http://127.0.0.1:${port}/`)
+    console.log(`  编辑器 http://127.0.0.1:${port}/.dev/editor/\n`)
     console.log(`  改 content.json / styles.css 保存即可，页面会自动刷新。`)
     console.log(`  按 Ctrl+C 停。\n`)
   })

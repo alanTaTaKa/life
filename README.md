@@ -23,7 +23,32 @@ tools/         make-paper.mjs：重新生成纸纹
 
 ## 改内容
 
-只改 `content.json`，然后重新生成。字段：
+### 办法一：表单编辑（不用碰 JSON）
+
+```powershell
+node dev.mjs        # 起服务
+```
+
+打开 **http://127.0.0.1:4173/.dev/editor/**
+
+1. 点右上角「连接 site 文件夹」，选到 `E:\dsh-demo\site`
+2. 在「站点 / 阶段 / 风格」三个页签里改：改字、加删阶段、加删作品、换封面图、改配色和字体
+3. 点「保存」→ 写回 `content.json`（和 `styles.css`），页面自动重建
+4. 点「打开预览」看效果
+5. 满意了再推送：
+
+```powershell
+git add content.json index.html styles.css assets
+git commit -m "改内容"
+git push
+```
+
+> 编辑器只认 Chrome / Edge（用到 File System Access API），而且只能在 `node dev.mjs` 起的
+> 本地服务下打开，`file://` 打不开。它不进仓库（`.gitignore` 里的 `.dev/`），不影响线上站点。
+
+### 办法二：直接改 `content.json`
+
+只改 `content.json`，然后 `node build.mjs` 重新生成。字段：
 
 | 字段 | 说明 |
 |---|---|

@@ -44,16 +44,19 @@ node dev.mjs        # 起服务
 打开 **http://127.0.0.1:4173/.dev/editor/**
 
 1. 点右上角「连接 site 文件夹」，选到 `E:\dsh-demo\site`
-2. 在「站点 / 阶段 / 风格」三个页签里改：改字、加删阶段、加删作品、换封面图、改配色和字体
+2. 在「站点 / 主页 / 阶段 / 风格」四个页签里改：改字、拖动主页入口、加删阶段、加删作品、换封面图、改配色和字体
 3. 点「保存」→ 写回 `content.json`（和 `styles.css`），页面自动重建
 4. 点「打开预览」看效果
 5. 满意了再推送：
 
 ```powershell
-git add content.json index.html styles.css assets
+git add content.json index.html styles.css assets about works likes photos
 git commit -m "改内容"
 git push
 ```
+
+> 上传图片会自动压到 300KB 以内（透明图转 WebP，照片转 JPEG，宽度最多 1920），
+> 压完会提示「压到 xxxKB」。压不下来才会拒绝。
 
 > 编辑器只认 Chrome / Edge（用到 File System Access API），而且只能在 `node dev.mjs` 起的
 > 本地服务下打开，`file://` 打不开。它不进仓库（`.gitignore` 里的 `.dev/`），不影响线上站点。

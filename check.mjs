@@ -40,6 +40,27 @@ if (s.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s.email)) err(`site.email 不�
 if (s.github && !isUrl(s.github)) err(`site.github 不是 http(s) 链接：${s.github}`)
 if (s.name && /你的名字/.test(s.name)) warn('site.name 还是「你的名字」')
 
+// 主页：四样入口 + 背景
+const homeObjs = (data.home || {}).objects || []
+if (!homeObjs.length) warn('主页还没有摆放入口')
+homeObjs.forEach((o, i) => {
+  const at = `home.objects[${i}]`
+  if (!o.label) err(`${at}.label 为空`)
+  if (!o.href) err(`${at}.href 为空`)
+  else if (!isUrl(o.href) && !/^[a-z0-9-]+\/$/i.test(o.href)) err(`${at}.href 既不是 http 链接也不是 "xxx/"：${o.href}`)
+  for (const axis of ['x', 'y']) {
+    const v = Number(o[axis])
+    if (!Number.isFinite(v) || v < 0 || v > 100) err(`${at}.${axis} 要在 0–100 之间`)
+  }
+})
+
+const homeBg = (data.home || {}).background
+if (homeBg) {
+  const p = join(here, homeBg)
+  if (!existsSync(p)) err(`home.background 指向不存在的文件：${homeBg}`)
+  else if (statSync(p).size > 300 * 1024) warn(`home.background 有 ${Math.round(statSync(p).size / 1024)}KB，超过 300KB`)
+}
+
 if (!Array.isArray(data.stages) || data.stages.length === 0) {
   err('stages 不是非空数组')
 } else {

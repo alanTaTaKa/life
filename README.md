@@ -2,6 +2,8 @@
 
 一个人的时间线 + 作品集。静态单页，零依赖，发到 GitHub Pages。
 
+**线上地址：https://alantataka.github.io/life/**
+
 - 内容全在 `content.json`，页面由 `node build.mjs` 生成
 - 没有框架、没有构建链、没有 CDN；断网、`file://` 直开也能看
 - 视觉：暖纸 + 淡青，衬线标题、楷体小记、纸纹底
